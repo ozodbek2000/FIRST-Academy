@@ -1,7 +1,22 @@
 .header {
 
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 2;
+
+    &.scrolled {
+        background-color: #07202fc5;
+        backdrop-filter: blur(10px);
+    }
+
     &.about-header {
         background-color: transparent;
+    }
+
+    &.about-header.scrolled {
+        background-color: #000000c2;
+        backdrop-filter: blur(10px);
     }
 
     padding: 20px 0px;

@@ -8,6 +8,7 @@
     justify-content: center;
     height: 640px;
     position: relative;
+    margin-bottom: 130px;
 
     &__container {
         max-width: 765px !important;
@@ -52,6 +53,7 @@
 
     @media (max-width: 1080px) {
         background-size: cover;
+        margin-bottom: 70px;
         &__container {
             max-width: 765px !important;
             text-align: center;

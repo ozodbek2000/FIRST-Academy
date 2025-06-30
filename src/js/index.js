@@ -27,14 +27,24 @@ $(document).ready(function () {
     $(".faq-item").click(function (event) {
         $(this).toggleClass("active");
     });
-    
+
     //READ MORE
-    $(".story__slide_text > span").on("click", function() {
-        $(this).siblings('p').css('-webkit-line-clamp', 'unset');
+    $(".story__slide_text > span").on("click", function () {
+        $(this).siblings("p").css("-webkit-line-clamp", "unset");
         $(this).hide();
     });
     //READ MORE
-    
+
+    $(window).scroll(function() {
+        var $header = $('header');
+        
+        if ($(window).scrollTop() > 100) {
+            $header.addClass('scrolled');
+        } else {
+            $header.removeClass('scrolled');
+        }
+    });
+
     dropdown();
     dropdownSimple();
     if ($(window).width() < 1080) {
@@ -59,7 +69,6 @@ $(document).ready(function () {
                 },
             },
         });
-
     }
 
     //COPYING FORM INPUTS
@@ -67,84 +76,84 @@ $(document).ready(function () {
     new Swiper(".advan__grid_swiper", {
         slidesPerView: 2,
         breakpoints: {
-                0: {
-                    slidesPerView: 1,
-                    spaceBetween: 10,  
-                },
-                1080: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,  
-                },
+            0: {
+                slidesPerView: 1,
+                spaceBetween: 10,
             },
+            1080: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+            },
+        },
     });
 
     new Swiper(".consult__cards_container", {
         breakpoints: {
-                0: {
-                    slidesPerView: 1,
-                    spaceBetween: 30,  
-                },
-                767: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,  
-                },
-                1080: {
-                    slidesPerView: 4,
-                    spaceBetween: 20,  
-                },
+            0: {
+                slidesPerView: 1,
+                spaceBetween: 30,
             },
+            767: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+            },
+            1080: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            },
+        },
     });
 
     new Swiper(".latest__swiper", {
         breakpoints: {
-                0: {
-                    slidesPerView: 1,
-                    spaceBetween: 30,  
-                },
-                767: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,  
-                },
-                1080: {
-                    slidesPerView: 4,
-                    spaceBetween: 20,  
-                },
+            0: {
+                slidesPerView: 1,
+                spaceBetween: 30,
             },
+            767: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+            },
+            1080: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            },
+        },
     });
 
     new Swiper(".partners__swiper", {
         breakpoints: {
-                0: {
-                    slidesPerView: 1,
-                    spaceBetween: 30,  
-                },
-                767: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,  
-                },
-                1080: {
-                    slidesPerView: 3,
-                    spaceBetween: 20,  
-                },
+            0: {
+                slidesPerView: 1,
+                spaceBetween: 30,
             },
+            767: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+            },
+            1080: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+        },
     });
 
     new Swiper(".trust__swiper", {
         slidesPerView: 5,
         breakpoints: {
-                0: {
-                    slidesPerView: 1,
-                    spaceBetween: 50,  
-                },
-                767: {
-                    slidesPerView: 3,
-                    spaceBetween: 50,  
-                },
-                1080: {
-                    slidesPerView: 5,
-                    spaceBetween: 110,  
-                },
+            0: {
+                slidesPerView: 1,
+                spaceBetween: 50,
             },
+            767: {
+                slidesPerView: 3,
+                spaceBetween: 50,
+            },
+            1080: {
+                slidesPerView: 5,
+                spaceBetween: 110,
+            },
+        },
     });
 
     $(".calc__inputs_clear a:last-child").on("click", function (e) {
@@ -273,7 +282,7 @@ $(document).ready(function () {
         // Reset all dropdowns to default "ИП"
         $(".dropdown-simple span").text("ИП");
 
-        // Optional: Close any open dropdown menus
+        // Close any open dropdown menus
         $(".dropdown-simple_list").hide();
 
         // Optional: Add visual feedback (you can customize this)
@@ -281,25 +290,61 @@ $(document).ready(function () {
         setTimeout(() => {
             $(this).removeClass("clearing");
         }, 200);
+
+        // Update price after clearing
+        updatePrice();
     });
 
-    // Optional: Handle dropdown functionality if not already implemented
+    // UNIFIED DROPDOWN HANDLING - Ensures only one dropdown can be open at a time
+
+    // Handle dropdown toggle - close others when opening one
     $(".dropdown-simple > a").on("click", function (e) {
         e.preventDefault();
-        $(this).siblings(".dropdown-simple_list").toggle();
+        e.stopPropagation();
+
+        const $currentDropdown = $(this).siblings(".dropdown-simple_list");
+        const isCurrentlyOpen = $currentDropdown.is(":visible");
+
+        // Close all dropdowns first
+        $(".dropdown-simple_list").hide();
+
+        // If the clicked dropdown wasn't open, open it
+        if (!isCurrentlyOpen) {
+            $currentDropdown.show();
+        }
     });
 
-    // Optional: Handle dropdown item selection
+    // Handle dropdown item selection
     $(".dropdown-simple_list li a").on("click", function (e) {
         e.preventDefault();
+        e.stopPropagation();
+
         const selectedText = $(this).text();
         $(this).closest(".dropdown-simple").find("span").text(selectedText);
-        $(this).closest(".dropdown-simple_list").hide();
+
+        // Close all dropdowns after selection
+        $(".dropdown-simple_list").hide();
+
+        // Update price if this is a calculator dropdown
+        if (
+            $(this).closest(
+                ".calc__inputs_production, .calc__inputs_box, .calc__inputs_form"
+            ).length
+        ) {
+            updatePrice();
+        }
     });
 
-    // Optional: Close dropdowns when clicking outside
+    // Close all dropdowns when clicking outside
     $(document).on("click", function (e) {
         if (!$(e.target).closest(".dropdown-simple").length) {
+            $(".dropdown-simple_list").hide();
+        }
+    });
+
+    // Close dropdowns on ESC key
+    $(document).on("keydown", function (e) {
+        if (e.key === "Escape") {
             $(".dropdown-simple_list").hide();
         }
     });
@@ -476,6 +521,271 @@ $(document).ready(function () {
         });
     });
 
+    // Add this code to your existing JavaScript file
+
+    $(document).ready(function () {
+        // Phone formatting for three form
+        $(".three__form input[type='tel']").on("input", function () {
+            let input = $(this).val().replace(/\D/g, "");
+            if (input.startsWith("998")) input = input.slice(3);
+
+            let formatted = "+998";
+            if (input.length > 0) formatted += " " + input.substring(0, 2);
+            if (input.length > 2) formatted += " " + input.substring(2, 5);
+            if (input.length > 5) formatted += " " + input.substring(5, 7);
+            if (input.length > 7) formatted += " " + input.substring(7, 9);
+
+            $(this).val(formatted);
+        });
+
+        // Validation function for three form
+        function isValidUzbekPhoneThree(phone) {
+            const cleaned = phone.replace(/\s/g, "");
+            return /^\+998\d{9}$/.test(cleaned);
+        }
+
+        function showThreeFormError(input, message) {
+            alert(message);
+            input.focus();
+        }
+
+        // Send three form data to Telegram
+        function sendThreeFormToTelegram(data) {
+            const message = `
+📋 Новая заявка с формы "Три шага":
+
+👤 Имя: ${data.name}
+👥 Фамилия: ${data.surname}
+📱 Телефон: ${data.phone}
+🏢 Тип организации: ${data.orgType}
+📧 Email: ${data.email || "Не указан"}
+        `;
+
+            $.ajax({
+                url: `https://api.telegram.org/bot${botToken}/sendMessage`,
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: "HTML",
+                }),
+                success: function () {
+                    alert(
+                        "✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время."
+                    );
+
+                    // Clear form after successful submission
+                    $(".three__form input[type='text']").val("");
+                    $(".three__form input[type='tel']").val("+998");
+                    $(".three__form input[type='email']").val("");
+                    $(".three__form .dropdown-simple span").text("ООО");
+                    $(".dropdown-simple_list").hide();
+                },
+                error: function () {
+                    alert(
+                        "⚠️ Ошибка при отправке заявки. Пожалуйста, попробуйте позже."
+                    );
+                },
+            });
+        }
+
+        // Handle three form submission
+        $(".three__submit").on("click", function (e) {
+            e.preventDefault();
+
+            const $form = $(".three__form");
+            const name = $form.find(".three__inputs input:first").val().trim();
+            const surname = $form
+                .find(".three__inputs input:last")
+                .val()
+                .trim();
+            const phone = $form.find("input[type='tel']").val().trim();
+            const orgType = $form.find(".dropdown-simple span").text().trim();
+            const email = $form.find("input[type='email']").val().trim();
+
+            // Validation
+            if (!name) {
+                return showThreeFormError(
+                    $form.find(".three__inputs input:first"),
+                    "Пожалуйста, введите имя"
+                );
+            }
+
+            if (!surname) {
+                return showThreeFormError(
+                    $form.find(".three__inputs input:last"),
+                    "Пожалуйста, введите фамилию"
+                );
+            }
+
+            if (!phone || phone === "+998") {
+                return showThreeFormError(
+                    $form.find("input[type='tel']"),
+                    "Пожалуйста, введите номер телефона"
+                );
+            }
+
+            if (!isValidUzbekPhoneThree(phone)) {
+                return showThreeFormError(
+                    $form.find("input[type='tel']"),
+                    "Неверный формат номера телефона. Используйте формат: +998 XX XXX XX XX"
+                );
+            }
+
+            // Optional email validation
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                return showThreeFormError(
+                    $form.find("input[type='email']"),
+                    "Неверный формат email-адреса"
+                );
+            }
+
+            // Send data to Telegram
+            sendThreeFormToTelegram({
+                name: name,
+                surname: surname,
+                phone: phone,
+                orgType: orgType,
+                email: email,
+            });
+        });
+
+        // Initialize phone field with +998 prefix
+        $(".three__form input[type='tel']").val("+998");
+    });
+
+    // Add this code to your existing JavaScript file
+
+    $(document).ready(function () {
+        // Phone formatting for form--form
+        $(".form--form input[type='tel']").on("input", function () {
+            let input = $(this).val().replace(/\D/g, "");
+            if (input.startsWith("998")) input = input.slice(3);
+
+            let formatted = "+998";
+            if (input.length > 0) formatted += " " + input.substring(0, 2);
+            if (input.length > 2) formatted += " " + input.substring(2, 5);
+            if (input.length > 5) formatted += " " + input.substring(5, 7);
+            if (input.length > 7) formatted += " " + input.substring(7, 9);
+
+            $(this).val(formatted);
+        });
+
+        // Validation function for form--form
+        function isValidUzbekPhoneForm(phone) {
+            const cleaned = phone.replace(/\s/g, "");
+            return /^\+998\d{9}$/.test(cleaned);
+        }
+
+        function showFormError(input, message) {
+            alert(message);
+            input.focus();
+        }
+
+        // Send form--form data to Telegram
+        function sendFormToTelegram(data) {
+            const message = `
+❓ Новый вопрос с формы "Остались вопросы?":
+
+👤 Имя: ${data.name}
+👥 Фамилия: ${data.surname}
+📧 Email: ${data.email || "Не указан"}
+📱 Телефон: ${data.phone}
+
+💬 Пользователь хочет задать вопрос и получить консультацию.
+        `;
+
+            $.ajax({
+                url: `https://api.telegram.org/bot${botToken}/sendMessage`,
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: "HTML",
+                }),
+                success: function () {
+                    alert(
+                        "✅ Ваш вопрос успешно отправлен! Мы свяжемся с вами в ближайшее время для консультации."
+                    );
+
+                    // Clear form after successful submission
+                    $(".form--form input[type='text']").val("");
+                    $(".form--form input[type='email']").val("");
+                    $(".form--form input[type='tel']").val("+998");
+                },
+                error: function () {
+                    alert(
+                        "⚠️ Ошибка при отправке вопроса. Пожалуйста, попробуйте позже."
+                    );
+                },
+            });
+        }
+
+        // Handle form--form submission
+        $(".form__form_submit").on("click", function (e) {
+            e.preventDefault();
+
+            const $form = $(".form--form");
+            const name = $form.find(".form__form-box input:first").val().trim();
+            const surname = $form
+                .find(".form__form-box input:last")
+                .val()
+                .trim();
+            const email = $form.find("input[type='email']").val().trim();
+            const phone = $form.find("input[type='tel']").val().trim();
+
+            // Validation - required fields marked with *
+            if (!name) {
+                return showFormError(
+                    $form.find(".form__form-box input:first"),
+                    "Пожалуйста, введите имя (обязательное поле)"
+                );
+            }
+
+            if (!surname) {
+                return showFormError(
+                    $form.find(".form__form-box input:last"),
+                    "Пожалуйста, введите фамилию (обязательное поле)"
+                );
+            }
+
+            if (!phone || phone === "+998") {
+                return showFormError(
+                    $form.find("input[type='tel']"),
+                    "Пожалуйста, введите номер телефона (обязательное поле)"
+                );
+            }
+
+            if (!isValidUzbekPhoneForm(phone)) {
+                return showFormError(
+                    $form.find("input[type='tel']"),
+                    "Неверный формат номера телефона. Используйте формат: +998 XX XXX XX XX"
+                );
+            }
+
+            // Optional email validation (only if provided)
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                return showFormError(
+                    $form.find("input[type='email']"),
+                    "Неверный формат email-адреса"
+                );
+            }
+
+            // Send data to Telegram
+            sendFormToTelegram({
+                name: name,
+                surname: surname,
+                email: email,
+                phone: phone,
+            });
+        });
+
+        // Initialize phone field with +998 prefix
+        $(".form--form input[type='tel']").val("+998");
+    });
+
     //CALCULATOR LOGIC
     let selectedMonths = 3; // по умолчанию 3 месяца
 
@@ -592,17 +902,6 @@ $(document).ready(function () {
         $(this).addClass("active");
 
         selectedMonths = parseMonths($(this).text());
-        updatePrice();
-    });
-
-    // Выбор в дропдаунах
-    $(".dropdown-simple_list li a").on("click", function (e) {
-        e.preventDefault();
-        let selectedText = $(this).text();
-        $(this)
-            .closest(".dropdown-simple")
-            .find("> a > span")
-            .text(selectedText);
         updatePrice();
     });
 

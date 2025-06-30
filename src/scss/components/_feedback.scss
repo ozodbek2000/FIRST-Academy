@@ -65,6 +65,9 @@
         }
 
         &_content-title {
+            font-size: var(--title-big-size);
+            font-family: var(--raleway);
+            font-weight: 600;
         }
 
         &_content-text {
@@ -219,6 +222,10 @@
             }
 
             &_content-title {
+                font-size: var(--mobileTitle-size);
+                max-width: 320px;
+                margin: 0px auto;
+                margin-top: 10px;
             }
 
             &_content-text {

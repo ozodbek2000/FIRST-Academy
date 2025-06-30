@@ -1,6 +1,11 @@
 .faq {
     margin-bottom: 130px;
+    position: relative;
     &__container {
+    }
+
+    &__tag {
+        top: -10%;
     }
 
     &__title {
