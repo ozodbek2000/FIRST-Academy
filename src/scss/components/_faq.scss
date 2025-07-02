@@ -1,11 +1,14 @@
 .faq {
     margin-bottom: 130px;
     position: relative;
+    background-color: var(--black-white);
+    transition: 0.3s ease all;
+    padding-top: 130px;
     &__container {
     }
 
     &__tag {
-        top: -10%;
+        top: 10%;
     }
 
     &__title {
@@ -33,6 +36,7 @@
 
     @media (max-width: 1080px) {
         margin-bottom: 130px;
+        padding-top: 70px;
         &__container {
         }
 

@@ -1,3 +1,4 @@
+
 .header {
 
     position: fixed;
@@ -206,5 +207,21 @@
             cursor: pointer;
             display: none;
         }
+    }
+}
+
+body.light .header {
+    &.scrolled {
+        background-color: #ffffffca;
+        backdrop-filter: blur(10px);
+    }
+
+    &.about-header {
+        background-color: transparent;
+    }
+
+    &.about-header.scrolled {
+        background-color: #ffffffca;
+        backdrop-filter: blur(10px);
     }
 }

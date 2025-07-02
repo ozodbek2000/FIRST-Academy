@@ -1,10 +1,9 @@
 .three {
 
-    margin-bottom: 130px;
+    margin-bottom: 0px;
     background-color: var(--blue);
     padding: 40px 0px;
     font-family: var(--montserrat);
-    overflow: hidden;
 
     &__container {
         display: flex;
@@ -99,11 +98,10 @@
     }
 
     @media (max-width: 1080px) {
-        margin-bottom: 70px;
+        margin-bottom: 0px;
         background-color: var(--blue);
         padding: 18px 0px;
         font-family: var(--montserrat);
-        overflow: hidden;
     
         &__container {
             display: flex;

@@ -1,5 +1,5 @@
 import $ from "jquery";
-import Swiper from "swiper";
+import Swiper from "swiper/bundle";
 import { dropdown } from "./components/dropdown";
 import { dropdownSimple } from "./components/dropdown-simple";
 
@@ -35,13 +35,13 @@ $(document).ready(function () {
     });
     //READ MORE
 
-    $(window).scroll(function() {
-        var $header = $('header');
-        
+    $(window).scroll(function () {
+        var $header = $("header");
+
         if ($(window).scrollTop() > 100) {
-            $header.addClass('scrolled');
+            $header.addClass("scrolled");
         } else {
-            $header.removeClass('scrolled');
+            $header.removeClass("scrolled");
         }
     });
 
@@ -53,12 +53,18 @@ $(document).ready(function () {
             {
                 slidesPerView: 1,
                 spaceBetween: 10,
+                autoplay: {
+                    delay: 3000,
+                },
             }
         );
     }
 
     if ($(window).width() < 1080) {
         new Swiper(".story__swiper", {
+            autoplay: {
+                delay: 3000,
+            },
             spaceBetween: 10,
             breakpoints: {
                 0: {
@@ -75,19 +81,34 @@ $(document).ready(function () {
 
     new Swiper(".advan__grid_swiper", {
         slidesPerView: 2,
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
         breakpoints: {
             0: {
                 slidesPerView: 1,
                 spaceBetween: 10,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
             },
             1080: {
                 slidesPerView: 2,
                 spaceBetween: 20,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
             },
         },
     });
 
     new Swiper(".consult__cards_container", {
+        autoplay: {
+            delay: 3000,
+        },
         breakpoints: {
             0: {
                 slidesPerView: 1,
@@ -105,6 +126,9 @@ $(document).ready(function () {
     });
 
     new Swiper(".latest__swiper", {
+        autoplay: {
+            delay: 3000,
+        },
         breakpoints: {
             0: {
                 slidesPerView: 1,
@@ -122,6 +146,9 @@ $(document).ready(function () {
     });
 
     new Swiper(".partners__swiper", {
+        autoplay: {
+            delay: 3000,
+        },
         breakpoints: {
             0: {
                 slidesPerView: 1,
@@ -139,6 +166,9 @@ $(document).ready(function () {
     });
 
     new Swiper(".trust__swiper", {
+        autoplay: {
+            delay: 3000,
+        },
         slidesPerView: 5,
         breakpoints: {
             0: {
@@ -298,6 +328,8 @@ $(document).ready(function () {
     // UNIFIED DROPDOWN HANDLING - Ensures only one dropdown can be open at a time
 
     // Handle dropdown toggle - close others when opening one
+    // UNIFIED DROPDOWN HANDLING - Fixed version with active class management
+    // Handle dropdown toggle - close others when opening one
     $(".dropdown-simple > a").on("click", function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -305,12 +337,14 @@ $(document).ready(function () {
         const $currentDropdown = $(this).siblings(".dropdown-simple_list");
         const isCurrentlyOpen = $currentDropdown.is(":visible");
 
-        // Close all dropdowns first
+        // Close all dropdowns and remove all active classes first
         $(".dropdown-simple_list").hide();
+        $(".dropdown-simple_list").removeClass("active");
 
-        // If the clicked dropdown wasn't open, open it
+        // If the clicked dropdown wasn't open, open it and add active class
         if (!isCurrentlyOpen) {
             $currentDropdown.show();
+            $currentDropdown.addClass("active");
         }
     });
 
@@ -322,8 +356,9 @@ $(document).ready(function () {
         const selectedText = $(this).text();
         $(this).closest(".dropdown-simple").find("span").text(selectedText);
 
-        // Close all dropdowns after selection
+        // Close all dropdowns and remove active classes after selection
         $(".dropdown-simple_list").hide();
+        $(".dropdown-simple_list").removeClass("active");
 
         // Update price if this is a calculator dropdown
         if (
@@ -339,6 +374,7 @@ $(document).ready(function () {
     $(document).on("click", function (e) {
         if (!$(e.target).closest(".dropdown-simple").length) {
             $(".dropdown-simple_list").hide();
+            $(".dropdown-simple_list").removeClass("active");
         }
     });
 
@@ -346,6 +382,7 @@ $(document).ready(function () {
     $(document).on("keydown", function (e) {
         if (e.key === "Escape") {
             $(".dropdown-simple_list").hide();
+            $(".dropdown-simple_list").removeClass("active");
         }
     });
 
@@ -538,6 +575,33 @@ $(document).ready(function () {
             $(this).val(formatted);
         });
 
+        // Dropdown functionality - only one can be open at a time
+        $(".dropdown__title").click(function (event) {
+            event.stopPropagation();
+            const dropdown = $(this).closest(".dropdown");
+            const dropdownList = dropdown.find(".dropdown_list");
+            const isCurrentlyActive = dropdownList.hasClass("active");
+
+            // Close all dropdowns first
+            $(".dropdown_list").removeClass("active");
+
+            // If the clicked dropdown wasn't active, open it
+            if (!isCurrentlyActive) {
+                dropdownList.addClass("active");
+            }
+        });
+
+        $(".dropdown__item").click(function (event) {
+            const dropdown = $(this).closest(".dropdown");
+            const selectedText = $(this).text();
+            dropdown.find(".dropdown__title span").text(selectedText);
+            dropdown.find(".dropdown_list").removeClass("active");
+        });
+
+        $(document).click(function () {
+            $(".dropdown_list").removeClass("active");
+        });
+
         // Validation function for three form
         function isValidUzbekPhoneThree(phone) {
             const cleaned = phone.replace(/\s/g, "");
@@ -552,14 +616,14 @@ $(document).ready(function () {
         // Send three form data to Telegram
         function sendThreeFormToTelegram(data) {
             const message = `
-📋 Новая заявка с формы "Три шага":
-
-👤 Имя: ${data.name}
-👥 Фамилия: ${data.surname}
-📱 Телефон: ${data.phone}
-🏢 Тип организации: ${data.orgType}
-📧 Email: ${data.email || "Не указан"}
-        `;
+    📋 Новая заявка с формы "Три шага":
+    
+    👤 Имя: ${data.name}
+    👥 Фамилия: ${data.surname}
+    📱 Телефон: ${data.phone}
+    🏢 Тип организации: ${data.orgType}
+    📧 Email: ${data.email || "Не указан"}
+            `;
 
             $.ajax({
                 url: `https://api.telegram.org/bot${botToken}/sendMessage`,
@@ -651,11 +715,12 @@ $(document).ready(function () {
             });
         });
 
-        // Initialize phone field with +998 prefix
-        $(".three__form input[type='tel']").val("+998");
+        // Phone input will start empty - prefix added automatically during formatting
     });
 
     // Add this code to your existing JavaScript file
+
+    // Add this code to your existing JavaScript file (replace the existing form--form section)
 
     $(document).ready(function () {
         // Phone formatting for form--form
@@ -685,12 +750,14 @@ $(document).ready(function () {
 
         // Send form--form data to Telegram
         function sendFormToTelegram(data) {
+            const botToken = "8025593472:AAGfwJG1NL5nwWmB2L1DJK7pu4Z5xUaKa7E";
+            const chatId = "-1002710037990";
+
             const message = `
 ❓ Новый вопрос с формы "Остались вопросы?":
 
 👤 Имя: ${data.name}
 👥 Фамилия: ${data.surname}
-📧 Email: ${data.email || "Не указан"}
 📱 Телефон: ${data.phone}
 
 💬 Пользователь хочет задать вопрос и получить консультацию.
@@ -712,7 +779,6 @@ $(document).ready(function () {
 
                     // Clear form after successful submission
                     $(".form--form input[type='text']").val("");
-                    $(".form--form input[type='email']").val("");
                     $(".form--form input[type='tel']").val("+998");
                 },
                 error: function () {
@@ -728,25 +794,28 @@ $(document).ready(function () {
             e.preventDefault();
 
             const $form = $(".form--form");
-            const name = $form.find(".form__form-box input:first").val().trim();
-            const surname = $form
-                .find(".form__form-box input:last")
+            // Fixed selectors to match your HTML structure
+            const name = $form
+                .find(".form__form-box input[type='text']:first")
                 .val()
                 .trim();
-            const email = $form.find("input[type='email']").val().trim();
+            const surname = $form
+                .find(".form__form-box input[type='text']:last")
+                .val()
+                .trim();
             const phone = $form.find("input[type='tel']").val().trim();
 
             // Validation - required fields marked with *
             if (!name) {
                 return showFormError(
-                    $form.find(".form__form-box input:first"),
+                    $form.find(".form__form-box input[type='text']:first"),
                     "Пожалуйста, введите имя (обязательное поле)"
                 );
             }
 
             if (!surname) {
                 return showFormError(
-                    $form.find(".form__form-box input:last"),
+                    $form.find(".form__form-box input[type='text']:last"),
                     "Пожалуйста, введите фамилию (обязательное поле)"
                 );
             }
@@ -765,19 +834,10 @@ $(document).ready(function () {
                 );
             }
 
-            // Optional email validation (only if provided)
-            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                return showFormError(
-                    $form.find("input[type='email']"),
-                    "Неверный формат email-адреса"
-                );
-            }
-
             // Send data to Telegram
             sendFormToTelegram({
                 name: name,
                 surname: surname,
-                email: email,
                 phone: phone,
             });
         });
@@ -912,4 +972,175 @@ $(document).ready(function () {
 
     // Инициалный запуск
     updatePrice();
+});
+
+// Add this code to your existing JavaScript file
+
+$(document).ready(function () {
+    // Handle textarea form submission
+    $(".calc__inputs_textarea-send").on("click", function (e) {
+        e.preventDefault();
+
+        const $textarea = $(".calc__inputs_textarea textarea");
+        const message = $textarea.val().trim();
+
+        // Validation
+        if (!message) {
+            alert(
+                "Пожалуйста, введите ваш вопрос или опишите, чем мы можем помочь"
+            );
+            $textarea.focus();
+            return;
+        }
+
+        if (message.length < 10) {
+            alert(
+                "Пожалуйста, опишите ваш вопрос более подробно (минимум 10 символов)"
+            );
+            $textarea.focus();
+            return;
+        }
+
+        // Get calculator data for context
+        const formOwnership =
+            $(
+                ".calc__inputs_box:first .calc__inputs_box-input:first-child .dropdown-simple > a > span"
+            )
+                .text()
+                .trim() || "Не выбрано";
+        const organizationForm =
+            $(
+                ".calc__inputs_box:first .calc__inputs_box-input:last-child .dropdown-simple > a > span"
+            )
+                .text()
+                .trim() || "Не выбрано";
+        const activityType =
+            $(".calc__inputs_form .dropdown-simple > a > span").text().trim() ||
+            "Не выбрано";
+        const employeeCount =
+            $(
+                '.calc__inputs_box--2 .calc__inputs_box-item:first-child input[type="number"]'
+            ).val() || "0";
+        const monthlyTurnover =
+            $(
+                '.calc__inputs_box--2 .calc__inputs_box-item:last-child input[type="number"]'
+            ).val() || "0";
+        const selectedPeriod =
+            $(".calc__content_months span.active").text().trim() ||
+            "Не выбрано";
+
+        // Send to Telegram
+        sendTextareaToTelegram(
+            {
+                message: message,
+                context: {
+                    formOwnership: formOwnership,
+                    organizationForm: organizationForm,
+                    activityType: activityType,
+                    employeeCount: employeeCount,
+                    monthlyTurnover: monthlyTurnover,
+                    selectedPeriod: selectedPeriod,
+                },
+            },
+            $textarea
+        );
+    });
+
+    // Also allow sending with Enter key (Ctrl+Enter or Shift+Enter)
+    $(".calc__inputs_textarea textarea").on("keydown", function (e) {
+        if ((e.ctrlKey || e.shiftKey) && e.key === "Enter") {
+            e.preventDefault();
+            $(".calc__inputs_textarea-send").click();
+        }
+    });
+
+    // Send textarea data to Telegram
+    function sendTextareaToTelegram(data, textarea) {
+        const botToken = "8025593472:AAGfwJG1NL5nwWmB2L1DJK7pu4Z5xUaKa7E";
+        const chatId = "-1002710037990";
+
+        const telegramMessage = `
+💬 Новый запрос на консультацию из калькулятора:
+
+📝 Сообщение клиента:
+"${data.message}"
+
+📊 Контекст из калькулятора:
+• Форма собственности: ${data.context.formOwnership}
+• Организационная форма: ${data.context.organizationForm}
+• Основной вид деятельности: ${data.context.activityType}
+• Количество сотрудников: ${data.context.employeeCount}
+• Оборот в месяц: ${data.context.monthlyTurnover} UZS
+• Выбранный период: ${data.context.selectedPeriod}
+
+🎯 Клиент запрашивает профессиональную консультацию по тарифам.
+        `;
+
+        // Show loading state
+        const $sendButton = $(".calc__inputs_textarea-send");
+        const originalContent = $sendButton.html();
+        $sendButton.html(
+            '<div style="width: 16px; height: 16px; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>'
+        );
+        $sendButton.css("pointer-events", "none");
+
+        // Add CSS for loading animation if not exists
+        if (!$("#loading-style").length) {
+            $("head").append(`
+                <style id="loading-style">
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                </style>
+            `);
+        }
+
+        $.ajax({
+            url: `https://api.telegram.org/bot${botToken}/sendMessage`,
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                chat_id: chatId,
+                text: telegramMessage,
+                parse_mode: "HTML",
+            }),
+            success: function () {
+                // Success feedback
+                textarea.val(
+                    "Сообщение отправлено! Мы свяжемся с вами в ближайшее время."
+                );
+                textarea.prop("disabled", true);
+
+                // Reset after 3 seconds
+                setTimeout(function () {
+                    textarea.val("");
+                    textarea.prop("disabled", false);
+                    textarea.attr(
+                        "placeholder",
+                        "Расскажите, чем можем помочь?"
+                    );
+                }, 3000);
+
+                // Show success state
+                $sendButton.html("✓");
+                $sendButton.css("background-color", "#28a745");
+
+                setTimeout(function () {
+                    $sendButton.html(originalContent);
+                    $sendButton.css("background-color", "");
+                    $sendButton.css("pointer-events", "");
+                }, 3000);
+            },
+            error: function () {
+                alert(
+                    "⚠️ Ошибка при отправке сообщения. Пожалуйста, попробуйте позже."
+                );
+
+                // Reset button state
+                $sendButton.html(originalContent);
+                $sendButton.css("pointer-events", "");
+            },
+        });
+    }
 });
