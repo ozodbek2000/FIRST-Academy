@@ -23,18 +23,36 @@
         gap: 55px;
         &_item {
             position: relative;
+            a {
+                transition: 0.3s ease all;
+            }
         }
 
         &_item::after {
-            content: '';
+            content: "";
             position: absolute;
-            top: 0;
-            left: 0;
+            top: calc(50% - 2.5px);
+            left: -15px;
             width: 5px;
             height: 5px;
             border-radius: 50%;
         }
 
+        &_item:nth-child(1):hover {
+            a {
+                color: var(--blue-2);
+            }
+        }
+        &_item:nth-child(2):hover {
+            a {
+                color: var(--yellow-2);
+            }
+        }
+        &_item:nth-child(3):hover {
+            a {
+                color: var(--green-3);
+            }
+        }
         &_item:nth-child(1)::after {
             background-color: var(--blue-2);
         }
