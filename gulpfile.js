@@ -15,7 +15,7 @@ const del = require("del");
 const fileInclude = require("gulp-file-include");
 
 function clean() {
-    return del(["dist/**", "!dist/img/**", "!dist/img"]);
+    return del(["dist/**"]);
 }
 
 function styles() {
@@ -39,8 +39,6 @@ function scripts() {
         .pipe(dest("dist/js"))
         .pipe(browserSync.stream());
 }
-
-exports.scripts = scripts;
 
 function html() {
     return src("src/html/**/*.html")
@@ -85,6 +83,6 @@ function serve() {
 
 exports.default = series(
     clean,
-    parallel(styles, scripts, html, fonts, images),
+    parallel(styles, scripts, html, fonts, images, scripts),
     serve
 );
