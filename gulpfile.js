@@ -79,6 +79,7 @@ function serve() {
     watch("src/**/*.html", html);
     watch("src/fonts/**/*", fonts);
     watch("src/img/**/*", series(images));
+    watch("src/js/**/*.js", scripts);
 }
 
 exports.default = series(

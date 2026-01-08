@@ -5,6 +5,11 @@
 @use "base/mixin" as *;
 @use "base/common";
 @use "components/header";
+@use "components/main";
+@use "components/info";
+@use "components/school";
+@use "components/why";
+@use "components/teacher";
 
 [class*="__container"] {
     max-width: 1420px;
@@ -15,4 +20,9 @@
 body {
     color: var(--black);
     font-family: var(--proxima);
+    font-size: 18px;
+    background-color: #F7F7F7;
+}
+body.lock {
+    overflow: hidden;
 }
