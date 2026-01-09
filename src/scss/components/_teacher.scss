@@ -1,32 +1,177 @@
 .teacher {
-    
+    background-image: var(--gradient-2);
+    padding: 100px 0px;
+    border-radius: 40px;
     &__container {
     }
 
     &__title {
+        margin-bottom: 70px;
+        color: var(--green-2);
     }
 
     &__swiper {
     }
 
     &__wrapper {
+        display: inline-flex;
+        align-items: center;
     }
 
     &__slide {
+        padding: 50px;
+        background-color: var(--white);
+        border-radius: 20px;
+        display: grid;
+        grid-template-columns: minmax(0, 35%) minmax(0, 65%);
+        gap: 30px;
+        min-height: 363px;
+        grid-template-rows: minmax(0, 32px) 1fr;
+        .teacher__list_item::marker {
+            color: var(--green-3);
+        }
     }
-
-    &__img {
-    }
-
-    &__content {
-
-        &_name {
+    &__slide:nth-child(2) {
+        .teacher__list_item::marker {
+            color: var(--blue-2);
         }
     }
 
-    &__list {
+    &__img {
+        grid-row-start: 1;
+        grid-row-end: 3;
+    }
 
+    &__content_name {
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
         &_item {
+            list-style-type: disc;
+            list-style-position: inside;
+            font-size: 18px;
+        }
+    }
+    &__nav {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+        span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--grey-2);
+            cursor: pointer;
+        }
+        &_left {
+        }
+        &_right {
+        }
+    }
+}
+@media (max-width: 767px) {
+    .teacher {
+        background-image: var(--gradient-2);
+        padding: 48px 0px;
+        &__container {
+        }
+
+        &__title {
+            margin-bottom: 24px;
+            color: var(--green-2);
+        }
+
+        &__swiper {
+        }
+
+        &__wrapper {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        &__slide {
+            padding: 24px 12px;
+            background-color: var(--white);
+            border-radius: 20px;
+            display: grid;
+            grid-template-columns: minmax(0, 35%) minmax(0, 65%);
+            align-items: center;
+            gap: 30px;
+            row-gap: 0;
+            min-height: 363px;
+            grid-template-rows: 1fr 1fr;
+            .teacher__list_item::marker {
+                color: var(--green-3);
+            }
+        }
+        &__slide:nth-child(2) {
+            .teacher__list_item::marker {
+                color: var(--blue-2);
+            }
+        }
+
+        &__img {
+            img {
+                width: 100%;
+            }
+            max-width: 120px;
+            grid-row-start: 1;
+            grid-row-end: 2;
+        }
+
+        &__content_name {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: inherit;
+            grid-row-start: inherit;
+            grid-row-end: inherit;
+        }
+
+        &__list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            grid-column-start: 1;
+            grid-column-end: 3;
+            &_item {
+                list-style-type: disc;
+                list-style-position: inside;
+                font-size: 18px;
+            }
+        }
+        &__nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 10px;
+            span {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                background-color: var(--grey-2);
+                cursor: pointer;
+            }
+            span.swiper-button-disabled {
+                svg path {
+                    fill: var(--grey);
+                }
+            }
+            &_left {
+            }
+            &_right {
+            }
         }
     }
 }

@@ -1,0 +1,65 @@
+.faq {
+    background-color: var(--green-4);
+    padding: 100px 0px;
+    background-image: url(../img/png/bg-girl.png);
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: bottom;
+    background-size: 620px;
+    border-radius: 40px;
+
+    &__container {
+    }
+
+    &__title {
+        margin-bottom: 70px;
+        color: var(--green-2);
+    }
+
+    &__faqs {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    &__item {
+
+        &_question {
+        }
+
+        &_answer {
+        }
+    }
+}
+@media (max-width: 767px) {
+    .faq {
+        background-color: var(--green-4);
+        padding: 48px 0px;
+        background-image: none;
+        background-size: 620px;
+        border-radius: 40px;
+    
+        &__container {
+        }
+    
+        &__title {
+            margin-bottom: 24px;
+            color: var(--green-2);
+        }
+    
+        &__faqs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    
+        &__item {
+    
+            &_question {
+            }
+    
+            &_answer {
+            }
+        }
+    }
+}

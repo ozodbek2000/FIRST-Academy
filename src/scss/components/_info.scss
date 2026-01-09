@@ -1,12 +1,12 @@
-.info {
-    @keyframes scrollText {
-        from {
-            transform: translateX(0%);
-        }
-        to {
-            transform: translateX(-100%);
-        }
+@keyframes scrollText {
+    from {
+        transform: translateX(0%);
     }
+    to {
+        transform: translateX(-100%);
+    }
+}
+.info {
     margin: 0px 0px 150px 0px;
 
     &__level {

@@ -1,21 +1,24 @@
 :root {
-	// Семейство шрифта по умолчанию
-	--proxima: "Proxima Nova";
+    // Семейство шрифта по умолчанию
+    --proxima: "Proxima Nova";
 
+    // Цвет шрифта по умолчанию
+    --grey: #a7a7a7;
+    --grey-2: #f7f7f7;
+    --white: #fff;
+    --black: #313131;
+    --blue: #028a91;
+    --blue-2: #13b9c2;
+    --blue-3: #73f8f1;
+    --green: #124734;
+    --green-2: #1d7754;
+    --green-3: #86e3a6;
+    --green-4: #E0FEEB;
+    --yellow: #ff9700;
+    --yellow-2: #ffb140;
+    --yellow-3: #ffc673;
+    --gradient-2: linear-gradient(90deg, #e0fffd 0%, #e0feeb 100%);
+    --gradient: linear-gradient(180deg, #13B9C2 0%, #86E3A6 100%);
 
-	// Цвет шрифта по умолчанию
-	--white: #fff;
-	--black: #313131;
-	--blue: #028A91;
-	--blue-2: #13B9C2;
-	--blue-3: #73F8F1;
-	--green: #124734;
-	--green-2: #1D7754;
-	--green-3: #86E3A6;
-	--yellow: #FF9700;
-	--yellow-2: #FFB140;
-	--yellow-3: #FFC673;
-	
-	--radius: 30px;
-
+    --radius: 30px;
 }

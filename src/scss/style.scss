@@ -10,6 +10,12 @@
 @use "components/school";
 @use "components/why";
 @use "components/teacher";
+@use "components/student";
+@use "components/course";
+@use "components/learn";
+@use "components/faq";
+@use "components/step";
+@use "components/contact";
 
 [class*="__container"] {
     max-width: 1420px;
