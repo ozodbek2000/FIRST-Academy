@@ -81,8 +81,9 @@
             &:hover {
                 color: var(--green-2);
             }
-            &:active {
+            &.active {
                 font-weight: 700;
+                color: var(--green-2);
             }
         }
     }

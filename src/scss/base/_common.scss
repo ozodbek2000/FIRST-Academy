@@ -42,6 +42,11 @@
                 justify-content: center;
                 border-radius: 50%;
                 background-color: var(--grey-2);
+                svg {
+                    path:nth-child(2) {
+                        transition: 0.3s ease all;
+                    }
+                }
             }
         }
         &_answer {
@@ -55,6 +60,16 @@
                 opacity: 1;
                 visibility: visible;
                 max-height: 500px;
+            }
+            h4 {
+                span {
+                    svg {
+                        & path:nth-child(2) {
+                            opacity: 0;
+                            visibility: hidden;
+                        }
+                    }
+                }
             }
         }
     }
@@ -201,7 +216,8 @@
         }
 
         input:not(:placeholder-shown) + label {
-            bottom: 40px;
+            bottom: 42px;
+            font-size: 10px;
         }
     }
 }

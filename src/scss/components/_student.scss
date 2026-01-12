@@ -27,13 +27,13 @@
         gap: 50px;
         padding: 80px 100px 60px 60px;
         overflow: hidden;
-        &:nth-child(2) {
+        &:nth-child(2n) {
             background: linear-gradient(180deg, #ffefd8 98.03%, #f0e2cc 100%);
             .student__slide_content-overall {
                 background-color: var(--yellow-3);
             }
         }
-        &:nth-child(3) {
+        &:nth-child(3n) {
             background: linear-gradient(180deg, #d1fbe1 98.03%, #cef0da 100%);
             .student__slide_content-overall {
                 background-color: var(--green-3);
