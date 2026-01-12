@@ -48,6 +48,7 @@ $(document).ready(function () {
     });
     const courseSwiper = new Swiper(".course__swiper", {
         spaceBetween: 20,
+        autoplay: true,
         navigation: {
             nextEl: ".course__navigaton_right",
             prevEl: ".course__navigaton_left",

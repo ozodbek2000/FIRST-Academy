@@ -19,7 +19,7 @@
     }
 
     &__slide {
-        padding: 50px;
+        padding: 45px;
         background-color: var(--white);
         border-radius: 20px;
         display: grid;
@@ -47,14 +47,32 @@
         font-weight: 700;
     }
 
+    &__slide:nth-child(odd) {
+        .teacher__list_item {
+            &::before {
+                background-color: var(--green-3);
+            }
+        }
+    }
+
     &__list {
         display: flex;
         flex-direction: column;
         gap: 20px;
         &_item {
-            list-style-type: disc;
-            list-style-position: inside;
-            font-size: 18px;
+            position: relative;
+            padding-left: 25px;
+            line-height: 1.2;
+            &::before {
+                content: "";
+                position: absolute;
+                top: 6px;
+                left: 0px;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background-color: var(--blue-2);
+            }
         }
     }
     &__nav {
@@ -142,7 +160,7 @@
             grid-column-start: 1;
             grid-column-end: 3;
             &_item {
-                list-style-type: disc;
+                list-style-type: none;
                 list-style-position: inside;
                 font-size: 18px;
             }

@@ -26,6 +26,9 @@
         flex-direction: column;
         gap: 20px;
         background: var(--gradient);
+        p:nth-child(2) {
+            white-space: nowrap;
+        }
         &_title {
             font-size: 32px;
             font-weight: 700;
@@ -67,6 +70,10 @@
             flex-direction: column;
             gap: 24px;
             background: var(--gradient);
+            p:nth-child(2) {
+                white-space: inherit;
+            }
+            
             &_title {
                 font-size: 24px;
                 font-weight: 700;
